@@ -4,7 +4,7 @@ import configparser
 
 class HamsaHand:
     def __init__(self, config_path="hamsa.config", port="/dev/ttyUSB0", baudrate=115200):
-        self.ser = serial.Serial(port, baudrate, timeout=1)
+        self.ser = serial.Serial(port, 1000000, timeout=1)
         self.config = configparser.ConfigParser()
         self.config.read(config_path)
 
@@ -18,6 +18,7 @@ class HamsaHand:
     def _send_servo_command(self, servo_id, position, duration):
         """Send a position command to a single servo."""
         cmd = f"#{servo_id}P{int(position)}T{int(duration)}\r\n"
+	print("Sending command:", cmd)
         self.ser.write(cmd.encode())
         time.sleep(0.02)
 
